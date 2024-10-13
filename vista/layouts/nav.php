@@ -112,7 +112,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                  <li class="nav-item">
-                                     <a href="articulos.php" class="nav-link">
+                                     <a href="mostrar_articulos.php" class="nav-link">
                                     <i class="nav-icon fas fa-file-alt"></i>
                                     <p>Artículos</p>
                                      </a>

@@ -8,12 +8,10 @@ $buscar = isset($_GET['buscar']) ? $_GET['buscar'] : '';
 
 // Obtener pacientes de la base de datos con filtro de búsqueda
 if ($buscar) {
-    // Consulta SQL con filtro de búsqueda
     $sql = "SELECT * FROM pacientes WHERE nombres LIKE :buscar OR numero_documento LIKE :buscar";
     $stmt = $conexion->pdo->prepare($sql);
     $stmt->bindValue(':buscar', '%' . $buscar . '%', PDO::PARAM_STR);
 } else {
-    // Consulta SQL sin filtro
     $sql = "SELECT * FROM pacientes";
     $stmt = $conexion->pdo->prepare($sql);
 }
@@ -107,7 +105,7 @@ include_once 'layouts/header.php';
                                     <td><?php echo htmlspecialchars($paciente['tipo_documento']); ?></td>
                                     <td><?php echo htmlspecialchars($paciente['numero_documento']); ?></td>
                                     <td>
-                                        <a href="editar_paciente.php?id=<?= $paciente['id_paciente'] ?>" class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                                        <a href="editar_paciente.php?numero_documento=<?= urlencode($paciente['numero_documento']) ?>&nombre_completo=<?= urlencode($paciente['nombres'] . ' ' . $paciente['apellido_paterno'] . ' ' . $paciente['apellido_materno']) ?>" class="btn btn-outline-primary btn-sm d-flex align-items-center">
                                             <i class="fas fa-edit mr-2"></i> Editar
                                         </a>
 
