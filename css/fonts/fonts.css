@@ -1,0 +1,7 @@
+  /* Codigo para la fuente */
+@font-face {
+    font-family: 'MiFuente';
+    src: url('./css/css/fonts/Poppins-Bold.ttf') format('ttf');
+    font-weight: normal;
+    font-style: normal;
+}

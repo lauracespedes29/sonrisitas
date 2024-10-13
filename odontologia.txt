@@ -1,0 +1,87 @@
+CREATE TABLE Usuarios (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    ci VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    nombres VARCHAR(50) NOT NULL,
+    apellidos VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    rol ENUM('admin', 'doctor', 'staff') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE Pacientes (
+    id_paciente INT AUTO_INCREMENT PRIMARY KEY,
+    nombres VARCHAR(50),
+    apellidos VARCHAR(50),
+    fecha_nacimiento DATE,
+    direccion VARCHAR(255),
+    telefono VARCHAR(15),
+    email VARCHAR(100),
+    historial_medico TEXT,
+    seguro VARCHAR(100),
+    contacto_emergencia VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE Doctores (
+    id_doctor INT AUTO_INCREMENT PRIMARY KEY,
+    nombres VARCHAR(50) NOT NULL,
+    apellidos VARCHAR(50) NOT NULL,
+    especialidad VARCHAR(100),
+    credenciales VARCHAR(255),
+    horario TEXT,  -- Puedes usar JSON o un formato estructurado para los horarios
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE Farmacia (
+    id_farmacia INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_medicamento VARCHAR(100) NOT NULL,
+    stock INT NOT NULL,
+    fecha_vencimiento DATE,
+    proveedor VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE Tratamientos (
+    id_tratamiento INT AUTO_INCREMENT PRIMARY KEY,
+    descripcion TEXT NOT NULL,
+    paciente_id INT,
+    doctor_id INT,
+    fecha DATE,
+    notas TEXT,
+    FOREIGN KEY (paciente_id) REFERENCES Pacientes(id_paciente),
+    FOREIGN KEY (doctor_id) REFERENCES Doctores(id_doctor),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE Prescripciones (
+    id_prescripcion INT AUTO_INCREMENT PRIMARY KEY,
+    paciente_id INT,
+    doctor_id INT,
+    medicamento_id INT,
+    dosis VARCHAR(100),-- cantidad (1,0.5,1/4,2) + teimpo horas (4,6,8,24,36)
+    unidad VARCHAR(50),-- (e.g., mg, ml)
+    frecuencia INT, -- Número de días o semanas
+    fecha_inicio DATE,
+    fecha_fin DATE,
+    FOREIGN KEY (paciente_id) REFERENCES Pacientes(id_paciente),
+    FOREIGN KEY (doctor_id) REFERENCES Doctores(id_doctor),
+    FOREIGN KEY (medicamento_id) REFERENCES Farmacia(id_farmacia),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IngresosGastos (
+    id_ingresogasto INT AUTO_INCREMENT PRIMARY KEY,
+    tipo ENUM('ingreso', 'gasto') NOT NULL,
+    monto DECIMAL(10,2) NOT NULL,
+    descripcion TEXT,
+    fecha DATE NOT NULL,
+    paciente_id INT,
+    FOREIGN KEY (paciente_id) REFERENCES Pacientes(id_paciente),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE Citas (
+    id_cita INT AUTO_INCREMENT PRIMARY KEY,
+    paciente_id INT,
+    doctor_id INT,
+    fecha_hora DATETIME,
+    estado ENUM('programada', 'completada', 'cancelada') NOT NULL,
+    notas TEXT,
+    FOREIGN KEY (paciente_id) REFERENCES Pacientes(id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctores(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
