@@ -31,7 +31,7 @@ include_once 'layouts/header.php';
                 <div class="card-header">
                     <h1 class="card-title">Mostrar Pacientes</h1>
                 </div>
-            </div>
+            </zdiv>
         </div>
     </section>
     <section class="content">
@@ -105,17 +105,25 @@ include_once 'layouts/header.php';
                                     <td><?php echo htmlspecialchars($paciente['tipo_documento']); ?></td>
                                     <td><?php echo htmlspecialchars($paciente['numero_documento']); ?></td>
                                     <td>
-                                        <a href="editar_paciente.php?numero_documento=<?= urlencode($paciente['numero_documento']) ?>&nombre_completo=<?= urlencode($paciente['nombres'] . ' ' . $paciente['apellido_paterno'] . ' ' . $paciente['apellido_materno']) ?>" class="btn btn-outline-primary btn-sm d-flex align-items-center">
-                                            <i class="fas fa-edit mr-2"></i> Editar
-                                        </a>
-
-                                        <a href="eliminar_paciente.php?id=<?= $paciente['id_paciente'] ?>" class="btn btn-outline-danger btn-sm d-flex align-items-center mt-2" onclick="return confirm('¿Estás seguro de que deseas eliminar este paciente?')">
-                                            <i class="fas fa-trash-alt mr-2"></i> Eliminar
-                                        </a>
-
-                                        <a href="historial_paciente.php?id=<?= $paciente['id_paciente'] ?>" class="btn btn-outline-info btn-sm d-flex align-items-center mt-2">
-                                                <i class="fas fa-list mr-2"></i> Historial
+                                        <div class="btn-group">
+                                            <a href="editar_paciente.php?numero_documento=<?= urlencode($paciente['numero_documento']) ?>&nombre_completo=<?= urlencode($paciente['nombres'] . ' ' . $paciente['apellido_paterno'] . ' ' . $paciente['apellido_materno']) ?>" class="btn btn-outline-primary btn-sm">
+                                                <i class="fas fa-edit"></i> Editar
                                             </a>
+
+                                            <a href="eliminar_paciente.php?id=<?= $paciente['id_paciente'] ?>" class="btn btn-outline-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este paciente?')">
+                                                <i class="fas fa-trash-alt"></i> Eliminar
+                                            </a>
+
+                                            <a href="agregar_historial.php?documento=<?php echo $paciente['numero_documento']; ?>" class="btn btn-outline-secondary btn-sm">
+                                                <i class="fas fa-notes-medical"></i> Agregar Historial
+                                            </a>
+
+                                            <!-- Botón de Historial -->
+                                            <a href="historial_paciente.php?documento=<?php echo $paciente['numero_documento']; ?>" class="btn btn-outline-info btn-sm">
+                                                    <i class="fas fa-history"></i> Historial
+                                            </a>
+
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -128,4 +136,4 @@ include_once 'layouts/header.php';
 </div>
 <?php 
 include_once 'layouts/footer.php';
-?>
+?> 

@@ -48,17 +48,12 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="../vista/mostrarUsuarios.php" class="nav-link">
+                                    <a href="mostrarUsuarios.php" class="nav-link">
                                     <i class="fa-solid fa-users"></i>
                                     <p>Mostrar Usuarios</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="../vista/nuevoUsuario.php" class="nav-link">
-                                    <i class="fa-solid fa-user-plus"></i>
-                                    <p>Agregar Usuario</p>
-                                    </a>
-                                </li>
+                                
                             </ul>
                         </li>
                         <li class="nav-item has-treeview">
@@ -136,9 +131,15 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="reservar.php" class="nav-link">
+                                    <a href="reservacion_cita.php" class="nav-link">
                                     <i class="nav-icon far fa-image"></i>
                                     <p>Reservar cita</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="calendario.php" class="nav-link">
+                                    <i class="nav-icon far fa-image"></i>
+                                    <p>Reservaciones</p>
                                     </a>
                                 </li>
                                
@@ -148,23 +149,19 @@
                             <a href="#" class="nav-link">
                             <i class="fa-solid fa-file-medical"></i>
                             <p>
-                            Prescripcion
+                            tratamientos
                             <i class="right fas fa-angle-left"></i>
                             </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="agregarPaciente.php" class="nav-link">
+                                    <a href="tratamientos.php" class="nav-link">
                                     <i class="nav-icon far fa-image"></i>
-                                    <p>Agregar Paciente</p>
+                                    <p>Lista de tratamientos 
+                                    </p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="listaPacientes.php" class="nav-link">
-                                    <i class="nav-icon far fa-image"></i>
-                                    <p>Lista de Pacientes</p>
-                                    </a>
-                                </li>
+                                
                             </ul>
                         </li>
                         <li class="nav-item has-treeview">

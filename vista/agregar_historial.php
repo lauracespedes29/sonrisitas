@@ -23,17 +23,23 @@ if (isset($_GET['documento'])) {
         exit;
     }
 
-    // Obtener el historial odontológico del paciente
-    try {
-        $sql = "SELECT h.*, t.nombre AS tratamiento_nombre FROM historialodontologico h 
-                JOIN tratamientos t ON h.tratamiento_id = t.id_tratamiento 
-                WHERE h.paciente_id = ?";
-        $stmt = $conexion->pdo->prepare($sql);
-        $stmt->execute([$paciente['id_paciente']]);
-        $historial = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        echo "Error al obtener el historial: " . $e->getMessage();
-        exit;
+    // Manejo del formulario para agregar historial
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Obtener los datos del formulario
+        $tratamiento_id = $_POST['tratamiento'];
+        $fecha = $_POST['fecha'];
+        $notas = $_POST['notas'];
+
+        // Insertar el historial odontológico en la base de datos
+        try {
+            $sql = "INSERT INTO historialodontologico (paciente_id, tratamiento_id, fecha, notas) 
+                    VALUES (?, ?, ?, ?)";
+            $stmt = $conexion->pdo->prepare($sql);
+            $stmt->execute([$paciente['id_paciente'], $tratamiento_id, $fecha, $notas]);
+            echo "Historial agregado exitosamente.";
+        } catch (PDOException $e) {
+            echo "Error al agregar historial: " . $e->getMessage();
+        }
     }
 } else {
     echo "No se proporcionó un número de documento.";
@@ -46,7 +52,7 @@ if (isset($_GET['documento'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Odontología - Historial del Paciente</title>
+    <title>Sistema Odontología - Agregar Historial</title>
     <?php include_once 'layouts/header.php'; ?>
 </head>
 <body>
@@ -59,7 +65,7 @@ if (isset($_GET['documento'])) {
                 <div class="col-sm-12">
                     <div class="card-header text-center p-4" style="background-color: #007bff; color: white;">
                         <h1 class="card-title">
-                            <i class="fas fa-history"></i> Historial de <?php echo htmlspecialchars($paciente['nombres'] . " " . $paciente['apellido_paterno']); ?>
+                            <i class="fas fa-notes-medical"></i> Agregar Historial para <?php echo htmlspecialchars($paciente['nombres'] . " " . $paciente['apellido_paterno']); ?>
                         </h1>
                     </div>
                 </div>
@@ -85,39 +91,44 @@ if (isset($_GET['documento'])) {
             </div>
         </section>
 
-        <!-- Historial Odontológico -->
+        <!-- Formulario para agregar historial -->
         <section class="content">
             <div class="card card-primary card-outline">
-                <div class="card-header">
-                    <h3 class="card-title"><b>Historial Odontológico</b></h3>
+                <div class="card-header text-center">
+                    <h2><b>Formulario de Historial Odontológico</b></h2>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Tratamiento</th>
-                                    <th>Fecha</th>
-                                    <th>Notas</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($historial)): ?>
-                                    <?php foreach ($historial as $entry): ?>
-                                        <tr>
-                                            <td><?php echo htmlspecialchars($entry['tratamiento_nombre']); ?></td>
-                                            <td><?php echo htmlspecialchars($entry['fecha']); ?></td>
-                                            <td><?php echo htmlspecialchars($entry['notas']); ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="3" class="text-center">No hay historial registrado para este paciente.</td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
+                    <form action="" method="post"> <!-- Aquí se envía el formulario a sí mismo -->
+                        <div class="form-group">
+                            <label for="tratamiento">Tratamiento</label>
+                            <select class="form-control" id="tratamiento" name="tratamiento" required>
+                                <option value="" disabled selected>Seleccione un tratamiento</option>
+                                <?php
+                                // Aquí se obtienen los tratamientos disponibles de la base de datos
+                                $sql = "SELECT id_tratamiento, nombre FROM tratamientos";
+                                $stmt = $conexion->pdo->query($sql);
+                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<option value='" . $row['id_tratamiento'] . "'>" . htmlspecialchars($row['nombre']) . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fecha">Fecha del Tratamiento</label>
+                            <input type="date" class="form-control" id="fecha" name="fecha" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notas">Notas Adicionales</label>
+                            <textarea class="form-control" id="notas" name="notas" rows="4" placeholder="Ingrese notas del tratamiento"></textarea>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Agregar Historial</button>
+                            <a href="ver_paciente.php?documento=<?php echo $numero_documento; ?>" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </section>
